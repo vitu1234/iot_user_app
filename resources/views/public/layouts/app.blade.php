@@ -73,7 +73,7 @@
     @include('public.layouts.navigation')
 
     <!-- Page Content -->
-    <main class="px-3 mt-5">
+    <main class="px-3 mt-5 mb-5">
         @yield('content')
     </main>
 
