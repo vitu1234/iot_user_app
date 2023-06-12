@@ -81,9 +81,9 @@ class AuthController extends Controller
 
 
         if ($saveUser) {
-            return redirect("login")->with(['status' => 'success', 'message' => 'Account created, login to continue!']);
+            return redirect("/public/login")->with(['status' => 'success', 'message' => 'Account created, login to continue!']);
         } else {
-            return redirect("register")->with(['status' => 'error', 'message' => 'Account not created']);
+            return redirect("/public/register")->with(['status' => 'error', 'message' => 'Account not created']);
         }
     }
 

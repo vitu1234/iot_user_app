@@ -1,7 +1,8 @@
 @extends('public.layouts.app')
 
 @section('content')
-    <form method="post" id="login_form" class="px-md-5">
+    <form method="post" id="login_form" class="px-md-5" action="loginuser">
+        @csrf
         <!--      <img class="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
         <h5 class="h5 mb-3 fw-normal"><strong>Please sign in</strong></h5>
         @include('public.layouts.error_feedback')
