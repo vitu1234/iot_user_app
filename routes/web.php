@@ -20,4 +20,4 @@ Route::get('/', function () {
 Route::get('/public/login', [App\Http\Controllers\AuthController::class, 'loginView'])->name("login");
 Route::get('/public/register', [App\Http\Controllers\AuthController::class, 'registerView'])->name("register");
 Route::post('/public/registeruser', [App\Http\Controllers\AuthController::class, 'store'])->name("registeruser");
-Route::post('/public/loginuser', [App\Http\Controllers\AuthController::class, 'store'])->name("loginuser");
+Route::post('/public/loginuser', [App\Http\Controllers\AuthController::class, 'login'])->name("loginuser");

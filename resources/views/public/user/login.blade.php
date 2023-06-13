@@ -7,7 +7,7 @@
         <h5 class="h5 mb-3 fw-normal"><strong>Please sign in</strong></h5>
         @include('public.layouts.error_feedback')
         <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="email" required name="email"
+            <input type="text" class="form-control" id="email" required name="login"
                    placeholder="name@example.com">
             <label class="text-dark" for="email">Email address</label>
         </div>

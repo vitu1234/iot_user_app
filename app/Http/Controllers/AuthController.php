@@ -7,12 +7,16 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\ChirpstackAPIs;
+
 
 class AuthController extends Controller
 {
+    public $chirpstackAPI;
 
     public function __construct()
     {
+        $this->chirpstackAPI = new ChirpstackAPIs();
 //        $this->middleware(CheckAuthMiddleware::class)->only(['registerView']);
     }
 
@@ -22,6 +26,9 @@ class AuthController extends Controller
      */
     public function loginView()
     {
+//        echo "<pre>";
+//        print_r($this->chirpstackAPI->sendGetrequest("device-profile-templates"));
+//        echo "</pre>";
         return view('public.user.login');
     }
 
@@ -79,7 +86,55 @@ class AuthController extends Controller
             ]
         );
 
+        $data = [
+            'application' => [
+                'description' => 'Application for ' . $username,
+                'name' => $email,
+                'tenantId' => env("CHIRPSTACK_TENANT_ID")
+            ]
+        ];
+        //CREATE CHIRPSTACK APPLICATION
+        $saveChirpStackApp = $this->chirpstackAPI->sendPostRequest("applications", $data);
+        if ($saveChirpStackApp['error']){
+            return redirect("/public/register")->with(['status' => 'error', 'message' => 'An error occurred accessing external services!']);
+        }
 
+        $application_id = $saveChirpStackApp['data']['id'];
+        $getSavedUser = DB::connection('pgsql')->select(
+            'SELECT *
+                    FROM users
+                    WHERE email = :email
+                    AND username = :username LIMIT 1',
+            [
+                'email' => $email,
+                'username' => $username
+            ]
+        );
+
+        $user_id = $getSavedUser[0]->user_id;
+
+        //save application ID
+        $saveAppID = DB::connection('pgsql')->insert(
+            'INSERT INTO user_application (
+                   user_id,
+                   application_id,
+                   created_at,
+                   updated_at
+                    ) VALUES (?, ?, ?, ?)',
+            [
+                $user_id,
+                $application_id,
+                $date_created,
+                $date_created
+            ]
+        );
+
+
+
+        echo "<pre>";
+        print_r($saveChirpStackApp);
+        echo "</pre>";
+        die();
         if ($saveUser) {
             return redirect("/public/login")->with(['status' => 'success', 'message' => 'Account created, login to continue!']);
         } else {
@@ -87,35 +142,42 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function login(Request $request)
     {
-        //
+
+        $request->validate([
+            'login' => 'required',
+            'password' => 'required',
+        ], [
+            'login.required' => 'Username or email is required'
+        ]);
+
+        $login = $request->input('login');
+        $password = $request->input('password');
+
+        $user = DB::connection('pgsql')->select(
+            'SELECT *
+                    FROM users
+                    WHERE email = :email
+                    OR username = :username',
+            [
+                'email' => $login,
+                'username' => $login
+            ]
+        );
+
+        if (!$user || !password_verify($password, $password)) {
+            return back()->withErrors(['login' => 'Invalid credentials']);
+        }
+
+        // login to chirpstack
+        $chirpstackURL = env('CHIRPSTACK_API_URL');
+        $chirpstackUsername = env('CHIRPSTACK_USERNAME');
+        $chirpstackPassword = env('CHIRPSTACK_PASSWORD');
+
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
