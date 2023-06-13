@@ -9,7 +9,7 @@
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="email" required name="login"
                    placeholder="name@example.com">
-            <label class="text-dark" for="email">Email address</label>
+            <label class="text-dark" for="email">Email or Username</label>
         </div>
 
         <div class="form-floating mt-3 mb-1">

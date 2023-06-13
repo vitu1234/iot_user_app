@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\CheckAuthMiddleware;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -160,15 +159,30 @@ class AuthController extends Controller
                 'username' => $login
             ]
         );
-        if (count($user) > 0) {
-            if (!$user || !password_verify($password, $user[0]->password)) {
-                return back()->withErrors(['login' => 'Invalid credentials']);
-            }
-        } else {
-            if (!$user || !password_verify($password, $user[0]->password)) {
-                return back()->withErrors(['login' => 'Invalid credentials']);
-            }
+        if (count($user) == 0) {
+            return back()->withErrors(['login' => 'Invalid credentialsff'])->onlyInput('login');
         }
+        if (!$user || !password_verify($password, $user[0]->password)) {
+            return back()->withErrors(['login' => 'Invalid credentialfs'])->onlyInput('login');
+        }
+
+        $credentials = $request->only(['password']);
+        // Check if the login value is an email
+        if (filter_var($request->input('login'), FILTER_VALIDATE_EMAIL)) {
+            // If it's an email, set the email key
+            $credentials['email'] = $request->input('login');
+        } else {
+            // If it's not an email, set the username key
+            $credentials['username'] = $request->input('login');
+        }
+
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('/user/dashboard');
+        }
+        return back()->withErrors(['login' => 'Invalid credentialsf'])->onlyInput('login');
 
 
     }
