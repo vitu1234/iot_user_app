@@ -95,7 +95,7 @@ class AuthController extends Controller
         ];
         //CREATE CHIRPSTACK APPLICATION
         $saveChirpStackApp = $this->chirpstackAPI->sendPostRequest("applications", $data);
-        if ($saveChirpStackApp['error']){
+        if ($saveChirpStackApp['error']) {
             return redirect("/public/register")->with(['status' => 'error', 'message' => 'An error occurred accessing external services!']);
         }
 
@@ -129,13 +129,7 @@ class AuthController extends Controller
             ]
         );
 
-
-
-        echo "<pre>";
-        print_r($saveChirpStackApp);
-        echo "</pre>";
-        die();
-        if ($saveUser) {
+        if ($saveUser && $saveAppID) {
             return redirect("/public/login")->with(['status' => 'success', 'message' => 'Account created, login to continue!']);
         } else {
             return redirect("/public/register")->with(['status' => 'error', 'message' => 'Account not created']);
@@ -166,15 +160,15 @@ class AuthController extends Controller
                 'username' => $login
             ]
         );
-
-        if (!$user || !password_verify($password, $password)) {
-            return back()->withErrors(['login' => 'Invalid credentials']);
+        if (count($user) > 0) {
+            if (!$user || !password_verify($password, $user[0]->password)) {
+                return back()->withErrors(['login' => 'Invalid credentials']);
+            }
+        } else {
+            if (!$user || !password_verify($password, $user[0]->password)) {
+                return back()->withErrors(['login' => 'Invalid credentials']);
+            }
         }
-
-        // login to chirpstack
-        $chirpstackURL = env('CHIRPSTACK_API_URL');
-        $chirpstackUsername = env('CHIRPSTACK_USERNAME');
-        $chirpstackPassword = env('CHIRPSTACK_PASSWORD');
 
 
     }

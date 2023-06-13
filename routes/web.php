@@ -21,3 +21,5 @@ Route::get('/public/login', [App\Http\Controllers\AuthController::class, 'loginV
 Route::get('/public/register', [App\Http\Controllers\AuthController::class, 'registerView'])->name("register");
 Route::post('/public/registeruser', [App\Http\Controllers\AuthController::class, 'store'])->name("registeruser");
 Route::post('/public/loginuser', [App\Http\Controllers\AuthController::class, 'login'])->name("loginuser");
+
+Route::get('/user/home', [App\Http\Controllers\UserAppController::class, 'index'])->name("home");
