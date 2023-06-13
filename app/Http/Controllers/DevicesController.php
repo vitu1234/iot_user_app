@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UserAppController extends Controller
+class DevicesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('authenticated.user.dashboard');
+        return view('authenticated.user.devices');
+
     }
 
     /**
@@ -20,6 +21,11 @@ class UserAppController extends Controller
     public function create()
     {
         //
+    }
+
+    public function showAddForm()
+    {
+        return view('authenticated.user.add_devices');
     }
 
     /**
