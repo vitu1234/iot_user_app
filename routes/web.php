@@ -25,3 +25,4 @@ Route::post('/public/loginuser', [App\Http\Controllers\AuthController::class, 'l
 Route::get('/user/dashboard', [App\Http\Controllers\UserAppController::class, 'index'])->name("dashboard");
 Route::get('/user/devices', [App\Http\Controllers\DevicesController::class, 'index'])->name("devices");
 Route::get('/user/devices/add', [App\Http\Controllers\DevicesController::class, 'showAddForm'])->name("add_device");
+Route::get('/user/devices/device_type', [App\Http\Controllers\DevicesController::class, 'device_type'])->name("device_type");

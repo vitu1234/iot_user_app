@@ -28,6 +28,14 @@ class DevicesController extends Controller
         return view('authenticated.user.add_devices');
     }
 
+
+    public function device_type(Request $request){
+        $request->validate([
+            'devicetype' => 'required',
+        ]);
+        return view('authenticated.user.device_type')->with(["devicetype"=>$request->devicetype]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

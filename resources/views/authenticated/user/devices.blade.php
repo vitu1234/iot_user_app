@@ -3,7 +3,7 @@
 @section('content')
     <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Devices</h1>
+        <h1 class="h2">My Devices</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <a href="devices/add" type="button" class="btn btn-sm btn-outline-secondary">
                 <span data-feather="plus" class="align-text-bottom"></span>
@@ -18,9 +18,8 @@
             <tr>
                 <th scope="col">Device ID</th>
                 <th scope="col">Device Name</th>
-                <th scope="col">Farm Name</th>
-                <th scope="col">Location</th>
-                <th scope="col">Description</th>
+                <th scope="col">Mode</th>
+                <th scope="col">Status</th>
                 <th scope="col"></th>
             </tr>
             </thead>

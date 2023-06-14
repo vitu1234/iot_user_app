@@ -2,14 +2,14 @@
     <div class="position-sticky pt-3 sidebar-sticky">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="dashboard">
+                <a class="nav-link active" aria-current="page" href="/user/dashboard">
                     <span data-feather="home" class="align-text-bottom"></span>
                     Dashboard
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="devices">
+                <a class="nav-link" href="/user/devices">
                     <span data-feather="wifi" class="align-text-bottom"></span>
                     Devices
                 </a>
